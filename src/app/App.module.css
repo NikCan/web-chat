@@ -9,8 +9,8 @@
     width: 400px;
     border: 1px black solid;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
     flex-wrap: wrap;
-    align-content: flex-end;
     padding: 20px;
 }

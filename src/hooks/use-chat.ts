@@ -1,13 +1,23 @@
-import {useState} from "react";
+import {useEffect} from "react";
+import {appActions} from "../app/appSlice";
+import {useAppDispatch} from "./use-app-dispatch";
 
 export const useChat = () => {
-    const [messages, setMessages] = useState<string[]>([])
+  const dispatch = useAppDispatch()
+  const ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
 
-    const sendMessage = (newMessage: string) => {
-        newMessage && setMessages([...messages, newMessage])
+  const sendMessage = (newMessage: string) => {
+    if (newMessage) {
+      ws.send(newMessage)
     }
+  }
+  useEffect(() => {
+    ws.onmessage = (ev) => {
+      dispatch(appActions.setUsers({users: JSON.parse(ev.data)}))
+    }
+  }, [])
 
-    return {
-        messages, sendMessage
-    }
+  return {
+    sendMessage
+  }
 }

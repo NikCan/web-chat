@@ -1,14 +1,17 @@
 import {FC} from 'react'
 import {Message} from '../message'
+import {useAppSelector} from "../../hooks/use-app-selector";
 
-type Props = {
-  messages: string[]
-}
-export const List: FC<Props> = ({messages}) => {
-  const list = messages.map((m, i) => <Message key={i} message={m}/>)
+type Props = {}
+export const List: FC<Props> = () => {
+  const users = useAppSelector(state => state.app.users)
+
+  const list = users.map((u, i) => <Message key={i} user={u}/>)
   return (
-    <div style={{display: "flex", flexDirection: 'column', overflow: 'auto', height: '100%'}}>
-      {list}
+    <div style={{display: "flex", flexDirection: 'column-reverse', overflow: 'auto', height: '100%'}}>
+      <div style={{display: "flex", flexDirection: 'column', justifyContent: 'flex-end'}}>
+        {list}
+      </div>
     </div>
   )
 }
